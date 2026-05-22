@@ -17,7 +17,7 @@ st.set_page_config(
 CLAVE_DE_ACCESO = "david2531"
 RUTA_EXCEL = "empresa_MINSUR.xlsx"
 
-# 🔑 CONEXIÓN SEGURA A LA API KEY DESDE LOS SECRETS DE STREAMLIT (NUNCA MÁS EXPUESTA)
+# 🔑 CONEXIÓN SEGURA A LA API KEY DESDE LOS SECRETS DE STREAMLIT
 if "GROQ_API_KEY" in st.secrets:
     GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 else:
@@ -47,7 +47,7 @@ if not st.session_state["autenticado"]:
     st.stop()
 
 # ==============================================================================
-# 2️⃣ PROCESAMIENTO DE DATOS FINANCIEROS (REUTILIZADO)
+# 2️⃣ PROCESAMIENTO DE DATOS FINANCIEROS
 # ==============================================================================
 def limpiar_hoja_excel(df):
     df = df.dropna(how='all', axis=1)
@@ -143,7 +143,7 @@ if pregunta_usuario := st.sidebar.chat_input("Escribe tu consulta contable aquí
         # Llamada al cerebro de Groq usando la llave segura
         client = Groq(api_key=GROQ_API_KEY)
         respuesta_ia = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama-3.1-8b-instant",  # El nuevo motor ultra rápido
             messages=[
                 {"role": "system", "content": instrucciones_agente},
                 *st.session_state["historial_chat"]
