@@ -17,8 +17,12 @@ st.set_page_config(
 CLAVE_DE_ACCESO = "david2531"
 RUTA_EXCEL = "empresa_MINSUR.xlsx"
 
-# 🔑 TU LLAVE DE GROQ CONECTADA Y PROTEGIDA
-GROQ_API_KEY = "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"
+# 🔑 CONEXIÓN SEGURA A LA API KEY DESDE LOS SECRETS DE STREAMLIT (NUNCA MÁS EXPUESTA)
+if "GROQ_API_KEY" in st.secrets:
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+else:
+    # Opción de respaldo por si no se configura en la nube
+    GROQ_API_KEY = "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"
 
 # Inicializar estados de sesión
 if "autenticado" not in st.session_state:
@@ -136,7 +140,7 @@ if pregunta_usuario := st.sidebar.chat_input("Escribe tu consulta contable aquí
     )
     
     try:
-        # Llamada al cerebro de Groq (Llama 3 de alta velocidad)
+        # Llamada al cerebro de Groq usando la llave segura
         client = Groq(api_key=GROQ_API_KEY)
         respuesta_ia = client.chat.completions.create(
             model="llama3-8b-8192",
@@ -155,7 +159,7 @@ if pregunta_usuario := st.sidebar.chat_input("Escribe tu consulta contable aquí
         st.rerun()
         
     except Exception as e:
-        st.sidebar.error(f"Error del Agente IA: Verifica la conexión.")
+        st.sidebar.error("Error del Agente IA: Verifica la conexión.")
 
 # ==============================================================================
 # 4️⃣ CUERPO PRINCIPAL: INTERFAZ GRÁFICA VISUAL (DASHBOARD)
@@ -172,7 +176,6 @@ st.markdown(f"""
 
 col_sel1, col_sel2 = st.columns([1, 3])
 with col_sel1:
-    # 🌟 CORREGIDO: Aquí cambiamos 'amios_disponibles' por 'anios_disponibles'
     anio_seleccionado = st.selectbox("📅 Historial Fiscal Año:", anios_disponibles)
 
 datos_anio = df[df['Año'] == anio_seleccionado].iloc[0]
