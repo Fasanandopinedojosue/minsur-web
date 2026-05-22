@@ -5,13 +5,13 @@ import plotly.graph_objects as go
 from groq import Groq  # Importamos el motor del Agente IA
 
 # ==============================================================================
-# 1️⃣ CONFIGURACIÓN DE LA PÁGINA Y SEGURIDAD (FUERZA LA BARRA LATERAL VISIBLE)
+# 1️⃣ CONFIGURACIÓN DE LA PÁGINA Y SEGURIDAD
 # ==============================================================================
 st.set_page_config(
     page_title="MINSUR S.A. — Agente AI & Dashboard",
     page_icon="💼",
     layout="wide",
-    initial_sidebar_state="expanded"  # OBLIGA A MOSTRAR EL CHAT DEL AGENTE
+    initial_sidebar_state="expanded"  # Obliga a mostrar el chat del agente
 )
 
 CLAVE_DE_ACCESO = "david2531"
@@ -172,7 +172,8 @@ st.markdown(f"""
 
 col_sel1, col_sel2 = st.columns([1, 3])
 with col_sel1:
-    anio_seleccionado = st.selectbox("📅 Historial Fiscal Año:", amios_disponibles)
+    # 🌟 CORREGIDO: Aquí cambiamos 'amios_disponibles' por 'anios_disponibles'
+    anio_seleccionado = st.selectbox("📅 Historial Fiscal Año:", anios_disponibles)
 
 datos_anio = df[df['Año'] == anio_seleccionado].iloc[0]
 
